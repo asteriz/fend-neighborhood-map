@@ -63,10 +63,9 @@ function populateInfoWindow(marker, infowindow) {
 				'<div><ul id="wiki"><em>Wikipedia is loading...</em></ul></div>');
 		var streetViewService = new google.maps.StreetViewService();
 		var radius = 50;
-		// In case the status is OK, which means the pano was found, compute the
-		// position of the streetview image, then calculate the heading, then get a
-		// panorama from that and set the options
-		function getStreetView(data, status) {
+		// Use streetview service to get the closest streetview image within
+		// 50 meters of the markers position
+		streetViewService.getPanoramaByLocation(marker.position, radius, function(data, status) {
 			if (status == google.maps.StreetViewStatus.OK) {
 				var nearStreetViewLocation = data.location.latLng;
 				var heading = google.maps.geometry.spherical.computeHeading(
@@ -85,10 +84,7 @@ function populateInfoWindow(marker, infowindow) {
 			} else {
 				$('#streetview').html('<em>No Street View Found</em>');
 			}
-		}
-		// Use streetview service to get the closest streetview image within
-		// 50 meters of the markers position
-		streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+		});
 		var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
 		var wikiTimeout = setTimeout(function() {
 			$('#wiki').html('<em>Failed to get wikipedia resources</em>');
@@ -212,7 +208,7 @@ function ViewModel(places) {
 	}));
 
 	this.filteredPlaces = ko.computed(function() {
-		return places = this.places().filter(function(place) {
+		var places = this.places().filter(function(place) {
 			if (place.title.toUpperCase().indexOf(this.filterValue().toUpperCase()) >= 0) {
 				// show marker
 				place.marker.setMap(map);
@@ -227,6 +223,7 @@ function ViewModel(places) {
 				return false;
 			}
 		}.bind(this));
+		return places;
 	}.bind(this));
 }
 
