@@ -1,13 +1,14 @@
 /*
  * Base structure
  */
-html, body {
+html {
   height: 100%;
 }
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 50px;
+  height: 100%;
 }
 
 /*
@@ -24,7 +25,7 @@ body {
  */
 .navbar-fixed-top {
   border: 0;
-  min-width: 480px;
+  min-width: 300px;
 }
 
 #sidebar-icon {
@@ -94,7 +95,7 @@ body {
   right: 0;
   top: 50px;
   bottom: 0;
-  min-width: 480px;
+  min-width: 300px;
 }
 
 @media (min-width: 768px) {
@@ -108,17 +109,6 @@ body {
  * Info window
  */
 #pano {
-  width: 360px;
-}
-
-#streetview {
-  float: left;
   width: 200px;
-  height: 200px;
-}
-
-#wiki {
-  width: 160px;
-  height: 200px;
-  float: left;
+  height: 100px;
 }
